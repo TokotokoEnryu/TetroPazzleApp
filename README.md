@@ -1,6 +1,6 @@
 # Tetro Pazzle App
 
-ご本家様のテトロパズル電卓[https://myar.tistory.com/entry/ninokuni-tetro-puzzle-calculator]を自分用にアレンジしています。
+ご本家様の[テトロパズル電卓](https://myar.tistory.com/entry/ninokuni-tetro-puzzle-calculator)を自分用にアレンジしています。
 
 ## URL
 
