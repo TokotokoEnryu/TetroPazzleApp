@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="二ノ国クロスワールドのサポートツールで、本家様のテトロパズル電卓を自分が使いやすいようにアレンジしたページです。">
+    <meta property="og:title" content="テトロパズル計算機 エンリュver.">
+    <meta property="og:locale" content="ja_JP">
+    <title>テトロパズル計算機 エンリュver.</title>
+    <script src="orig_source.js"></script>
+    <script src="main.js?v=alpha240706" defer></script>
+    <link rel="stylesheet" href="style.css?v=alpha240706_0">
+    <link rel="stylesheet" href="orig_style.css?v=alpha240706_0">
+  </head>
+  <body>
+    <header>
+      <h1>テトロパズル計算機</h1>
+    </header>
+    <section id="_note">
+      <p>本家様(<a href="https://myar.tistory.com/entry/ninokuni-tetro-puzzle-calculator">テトロパズル電卓</a>)</p>
+      <h2>主な追加機能</h2>
+      <p>・追加するたびに記載していきます。まずは再現するのが目標。</p>
+    </section>
+    <section id="_dev">
+      <div class="tt_article_useless_p_margin contents_style">
+        <div id="_div_header">
+        </div>
+        <div id="_div_program">
+            <div id="_div_arrangement_control" style="visibility: hidden;">
+                <label id="_label_arrangement_title">配置</label>
+                <input type="range" id="_range_arrangement" min="0" value="0">
+                <label id="_label_arrangement"></label>
+            </div>
+            <div id="_div_main_svg">
+                <svg id="_svg_main" viewBox="0,0,900,900">
+                    <g id="_group_tetro"></g>
+                    <g id="_group_solution"></g>
+                </svg>
+            </div>
+            <div id="_div_main_control">
+                <label id="_label_main_title">パズル</label>
+                <input type="range" id="_range_main" min="0" value="0">
+                <label id="_label_main"></label>
+            </div>
+            <div id="_div_main_control2">
+                <select id="_select_puzzle_name"></select>
+                <input type="button" id="_button_preset_left" value="◀">
+                <input type="button" id="_button_preset_right" value="▶">
+                <input type="button" id="_button_main" value="計算">
+            </div>
+            <div id="_div_result_table">
+                <table id="_table_result">
+                    <thead>
+                        <tr id="_tr_shape">
+                            <td>ブロック</td>
+                            <td><svg viewBox="0,0,100,100"><g></g></svg></td>
+                            <td><svg viewBox="0,0,100,100"><g></g></svg></td>
+                            <td><svg viewBox="0,0,100,100"><g></g></svg></td>
+                            <td><svg viewBox="0,0,100,100"><g></g></svg></td>
+                            <td><svg viewBox="0,0,100,100"><g></g></svg></td>
+                            <td><svg viewBox="0,0,100,100"><g></g></svg></td>
+                            <td><svg viewBox="0,0,100,100"><g></g></svg></td>
+                        </tr>
+                        <tr>
+                            <td>能力</td>
+                            <td>攻撃力</td>
+                            <td>防御力</td>
+                            <td>HP</td>
+                            <td>回避</td>
+                            <td>命中</td>
+                            <td>クリティカル抵抗</td>
+                            <td>クリティカル</td>
+                        </tr>
+                        <tr id="_tr_sort">
+                            <td>並べ替え</td>
+                            <td>▼</td>
+                            <td>▼</td>
+                            <td>▼</td>
+                            <td>▼</td>
+                            <td>▼</td>
+                            <td>▼</td>
+                            <td>▼</td>
+                        </tr>
+                        <tr id="_tr_min_filter">
+                            <td>最小</td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                        </tr>
+                        <tr id="_tr_max_filter">
+                            <td>最大</td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                            <td><input type="number" min="0" max="100" inputmode="numeric" pattern="[0-9]*" value="0"></td>
+                        </tr>
+                    </thead>
+                    <tbody id="_table_body"></tbody>
+                </table>
+            </div>
+            <div id="_div_custom">
+                <label>
+                    <input type="checkbox" id="_checkbox_custom">
+                    カスタム
+                </label>
+                <div id="_div_custom_inner" style="display: none;">
+                    <textarea id="_textarea_custom" rows="9"></textarea>
+                    <div id="_div_custom_inner_control">
+                        <input id="_button_custom_refresh" type="button" value="リフレッシュ">
+                        <input id="_button_custom_export" type="button" value="エクスポート">
+                        <div style="flex-grow: 1;"></div>
+                        <input id="_button_custom_import" type="button" value="インポート">
+                        <input id="_button_custom" type="button" value="適用">
+                    </div>
+                    <a id="_tetro_download" download="puzzle.tetro" style="display: none;"></a>
+                    <input id="_tetro_upload" type="file" accept=".tetro" style="display: none;">
+                </div>
+            </div>
+        </div>
+        <div id="_div_description">
+          <p>〈使い方〉</p>
+          <br>
+          <p>1. 目的のパズルを選択し、計算ボタンを押します。計算に時間がかかる場合があります。</p>
+          <br>
+          <p>2. リストから目的の組み合わせを選択します。</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;1.ソート：▲、▼ボタンをクリック - 最後のソート状態に基づいて追加ソートされます。</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;2. フィルタ: 最小、最大数で範囲を調整します。</p>
+          <br>
+          <p>3. さまざまなバッチが存在する場合、上部からバッチを変更できます。</p>
+          <br>
+          <p>4. カスタムをチェックしたら、パズルプレートのマスをクリックして開閉できます。</p><p>
+          </p><p>&nbsp;&nbsp;&nbsp;&nbsp;1.リフレッシュ：パズルプレートを配列に変換</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;2. エクスポート: 配列 → tetro ファイル(コンピュータに個人的に保存)</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;3.インポート：tetroファイル→適用（保存されたファイルを読み込む）</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;4.適用：配列をパズルプレートに反映して計算</p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
