@@ -80,6 +80,8 @@
 }
 #_div_main_svg {
     margin-bottom: 20px;
+    width: 420px;
+    margin-left: calc(50% - 210px);
 }
 #_group_tetro rect {
     fill: rgb(81, 139, 143);
