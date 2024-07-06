@@ -554,11 +554,13 @@ class Tetro {
         return sb.join('');
     }
     static getMatchedBlock(tetro, j, i) {
+        // j: row, i: column from right
         let block = '';
         for (let shapeIndex = 0; shapeIndex < shapes.length; shapeIndex++) {
             const shape = shapes[shapeIndex];
             for (let pj = 0; pj < shape.bins.length; pj++) {
                 if (j - pj + shape.bins.length <= tetro.length && pj <= j) {
+                    // 上にずらしたところからマッチ判定
                     let pBin = shape.bins[pj];
                     let pi = 0;
                     while (pBin > 0) {
@@ -579,6 +581,7 @@ class Tetro {
                                         block = newBlock;
                                     }
                                     else {
+                                        // 別解がある場合
                                         return null;
                                     }
                                 }
@@ -590,6 +593,8 @@ class Tetro {
                 }
             }
         }
+        // '': 何も入らなかった場合
+        // block: 唯一解が得られた場合
         return block;
     }
     static getMatchOfFirstPoint(tetro, i) {
@@ -642,10 +647,12 @@ class Tetro {
                     const block = Tetro.getMatchedBlock(tetro, j, i);
                     if (block != null) {
                         if (block.length == 0) {
+                            // どのピースも入らないマスが見つかった
                             Tetro.scanMap.set(tetro, '');
                             return '';
                         }
                         Tetro.scanMap.set(tetro, block);
+                        // 唯一解が見つかった
                         return block;
                     }
                 }
@@ -653,6 +660,7 @@ class Tetro {
                 bin >>= 1;
             }
         }
+        // 複数解がある場合
         Tetro.scanMap.set(tetro, null);
         return null;
     }
@@ -707,12 +715,51 @@ class Tetro {
         buildSolution(tetro_, '');
         return solutions;
     }
+    static getSolutionListDev(tetro_) {
+        console.log('Calc with dev mode!');
+
+        const solutions = [];
+        function buildSolutionDev(tetro, solution) {
+            tetro = Tetro.strip(tetro);
+            if (tetro == '') {
+                solutions.push(solution);
+                return true;
+            }
+            const i = BitCalc.getFirstIndex(tetro.charCodeAt(0));
+            let match = Tetro.cmMap.get(tetro);
+            let isMatchRegistered = (match !== undefined);
+            let completeMatch = 0;
+            if (!isMatchRegistered) {
+                match = Tetro.getMatchOfFirstPoint(tetro, i);
+            }
+            let shapeIndex = shapes.length - 1;
+            while (match > 0) {
+                if (match & 1) {
+                    const block = Block.fromFirstMatch(i, shapeIndex);
+                    if (buildSolutionDev(Tetro.removeBlock(tetro, block), solution + block)) {
+                        completeMatch |= 1 << (shapes.length - 1 - shapeIndex);
+                    }
+                }
+                shapeIndex--;
+                match >>= 1;
+            }
+            if (isMatchRegistered) return true;
+            else if (completeMatch > 0) {
+                Tetro.cmMap.set(tetro, completeMatch);
+                return true;
+            }
+            return false;
+        }
+
+        buildSolutionDev(tetro_, '');
+        return solutions;                
+    }
     static getSolutionMapList(tetro) {
         if (Tetro.getCount(tetro) % 4 != 0) {
             return [];
         }
         const solMap = new Map();
-        const sols = Tetro.getSolutionList(tetro);
+        const sols = MainRange.getCalcmode().checked ? Tetro.getSolutionListDev(tetro) : Tetro.getSolutionList(tetro);
         for (let i = 0; i < sols.length; i++) {
             const sol = sols[i];
             let cb = [0, 0, 0, 0, 0, 0, 0];
@@ -1476,6 +1523,9 @@ class MainRange {
     }
     static getSelect() {
         return document.getElementById('_select_puzzle_name');
+    }
+    static getCalcmode() {
+        return document.getElementById('_switch_calcmode');
     }
 }
 class ResultTable {
